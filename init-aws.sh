@@ -1,16 +1,16 @@
 #!/bin/bash
-# init-aws.sh
 
 # Wait for LocalStack to be ready
-sleep 5
+echo "Waiting for LocalStack to be ready..."
+sleep 10
 
-# Create SQS queue
+# Create the SQS queue
+echo "Creating SQS queue..."
 awslocal sqs create-queue \
-    --queue-name calendar-entries \
-    --attributes "{
-        \"DelaySeconds\":\"0\",
-        \"MessageRetentionPeriod\":\"86400\",
-        \"VisibilityTimeout\":\"30\"
-    }"
+    --queue-name calendar-entries
 
-echo "SQS queue created successfully"
+echo "Verifying queue creation..."
+awslocal sqs list-queues
+
+echo "SQS queue setup completed"
+EOF
