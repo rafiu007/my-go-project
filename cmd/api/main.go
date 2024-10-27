@@ -20,21 +20,10 @@ import (
 
 func main() {
     // Initialize configuration
-    cfg := &config.Config{
-        Server: config.ServerConfig{
-            Port:         "8080",
-            ReadTimeout:  time.Second * 15,
-            WriteTimeout: time.Second * 15,
-        },
-        Database: config.DatabaseConfig{
-            DSN: "calendar_user:calendar_pass@tcp(localhost:3306)/calendar_db?parseTime=true",
-        },
-        Queue: config.QueueConfig{
-            Endpoint: "http://localhost:4566",
-            QueueURL: "http://localhost:4566/000000000000/calendar-entries",
-            Region:   "us-east-1",
-        },
-    }
+    cfg, err := config.Load()
+	if err != nil {
+		log.Fatalf("Failed to load configuration: %v", err)
+	}
 
     // Initialize database
     database, err := db.NewDatabase(cfg.Database.DSN)
