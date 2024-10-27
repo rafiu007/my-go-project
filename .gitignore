@@ -1,0 +1,14 @@
+# .gitignore
+.env
+tmp/
+.air.toml
+.idea/
+.vscode/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go.work
