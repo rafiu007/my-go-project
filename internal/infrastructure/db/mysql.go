@@ -4,7 +4,7 @@ package db
 import (
     "fmt"
     "log"
-    "my-go-project/internal/domain/entity"
+    "my_go_project/internal/domain/entity"
     "gorm.io/driver/mysql"
     "gorm.io/gorm"
     "gorm.io/gorm/logger"
