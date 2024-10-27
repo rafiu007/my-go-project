@@ -12,6 +12,7 @@ import (
 
     "my_go_project/config"
     "my_go_project/internal/infrastructure/db"
+    "my_go_project/internal/interfaces/http/handlers"
 )
 
 func main() {
@@ -32,9 +33,26 @@ func main() {
         log.Fatalf("Failed to run auto-migration: %v", err)
     }
 
+    // Initialize handlers
+    calendarHandler := handlers.NewCalendarHandler(database)
+
+    // Set up routes
+    mux := http.NewServeMux()
+    mux.HandleFunc("/calendar", func(w http.ResponseWriter, r *http.Request) {
+        switch r.Method {
+        case http.MethodPost:
+            calendarHandler.CreateEntry(w, r)
+        case http.MethodGet:
+            calendarHandler.GetActiveEntries(w, r)
+        default:
+            http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+        }
+    })
+
     // Create server
     srv := &http.Server{
         Addr:         ":" + cfg.Server.Port,
+        Handler:      mux,  // Set the mux as the handler
         ReadTimeout:  cfg.Server.ReadTimeout,
         WriteTimeout: cfg.Server.WriteTimeout,
     }
